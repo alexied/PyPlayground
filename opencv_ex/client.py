@@ -11,19 +11,19 @@ from io import BytesIO
 clientsocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 clientsocket.connect(('192.168.0.102', 8089))
 m = screeninfo.get_monitors()
-monitor = {'top': 0, 'left': 0, 'width': 1366, 'height': 768}
+monitor = {'top': 0, 'left': 0, 'width': 1280, 'height': 720}
 payload=[[],[]]
 def ss_encode1():
     with mss.mss() as sct:
         global payload
         asarr = numpy.asarray(sct.grab(monitor))
-        ret, payload[0] = cv2.imencode(".jpg", asarr, [int(cv2.IMWRITE_JPEG_QUALITY), 90])
+        ret, payload[0] = cv2.imencode(".jpg", asarr, [int(cv2.IMWRITE_JPEG_QUALITY), 30])
 
 def ss_encode2():
     global payload
     with mss.mss() as sct:
         asarr = numpy.asarray(sct.grab(monitor))
-        ret, payload[1] = cv2.imencode(".jpg", asarr, [int(cv2.IMWRITE_JPEG_QUALITY), 90])
+        ret, payload[1] = cv2.imencode(".jpg", asarr, [int(cv2.IMWRITE_JPEG_QUALITY), 30])
 
 def getImg():
     cnt=0
@@ -50,8 +50,6 @@ def getImg():
               break
         cnt+=1
 
-getImg()
-
 def sendone():
     with mss.mss() as sct:
                 last_time = time.time()
@@ -67,3 +65,5 @@ def sendone():
                   clientsocket.send(payload)
                 else:
                     print("ackg failed")
+
+getImg()
